@@ -1,7 +1,6 @@
-package com.br.todoapi.todo_api.security;
+package com.br.todoapi.todo_api.security.user;
 
 import com.br.todoapi.todo_api.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

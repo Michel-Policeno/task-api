@@ -1,8 +1,7 @@
-package com.br.todoapi.todo_api.security;
+package com.br.todoapi.todo_api.security.user;
 
 import com.br.todoapi.todo_api.entity.User;
 import com.br.todoapi.todo_api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
