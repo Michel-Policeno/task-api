@@ -21,7 +21,7 @@ public class User {
 
     @NotBlank(message = "O login é obrigatório")
     @Column(nullable = false, length = 100,  unique=true)
-    private String usuario;
+    private String email;
 
     @NotBlank(message = "A senha é obrigatório")
     @Column(nullable = false, length = 500)
@@ -38,6 +38,11 @@ public class User {
     @Column(nullable = false)
     private Boolean ativo = true;
 
-
-
+    public User(String email, String senha) {
+        this.email = email;
+        this.senha = senha;
+        this.tipo = UserRole.USER;
+        this.dataCriacao = LocalDateTime.now();
+        this.ativo = true;
+    }
 }
