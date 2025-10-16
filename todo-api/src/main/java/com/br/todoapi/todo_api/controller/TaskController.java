@@ -6,8 +6,11 @@ import com.br.todoapi.todo_api.dto.response.TaskResponse;
 import com.br.todoapi.todo_api.entity.Task;
 import com.br.todoapi.todo_api.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Tasks", description = "Endpoints para gerenciamento de tarefas")
+@SecurityRequirement(name = "bearerAuth")
 public class TaskController {
 
     @Autowired
@@ -44,6 +48,15 @@ public class TaskController {
     @GetMapping
     @Operation(summary = "Listar todas as tarefas", description = "Retorna todas as tarefas ordenadas por prioridade e data")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
+    @ApiResponse(responseCode = "403", description = "Acesso negado. Token inválido ou sem permissão.",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(value = """
+                {
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Acesso negado. Usuário não autorizado."
+                }
+                """)))
     public ResponseEntity<List<TaskResponse>> findAll() {
         List<Task> tasks = taskService.findAll();
         List<TaskResponse> response = tasks.stream()
@@ -57,7 +70,16 @@ public class TaskController {
     @Operation(summary = "Criar nova tarefa", description = "Cria uma nova tarefa no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Tarefa criada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado. Token inválido ou sem permissão.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = """
+                {
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Acesso negado. Usuário não autorizado."
+                }
+                """)))
     })
    public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskCreateRequest request) {
         Task task = taskService.create(
@@ -75,7 +97,16 @@ public class TaskController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Tarefa atualizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Tarefa não encontrada"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado. Token inválido ou sem permissão.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = """
+                {
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Acesso negado. Usuário não autorizado."
+                }
+                """)))
     })
     public ResponseEntity<TaskResponse> update(
             @PathVariable Long id,
@@ -93,10 +124,19 @@ public class TaskController {
 
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar tarefa", description = "Desativa uma tarefa (soft delete)")
+    @Operation(summary = "Deletar tarefa", description = "deleta uma tarefa")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Tarefa deletada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado. Token inválido ou sem permissão.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = """
+                {
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Acesso negado. Usuário não autorizado."
+                }
+                """)))
     })
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         taskService.delete(id);
@@ -108,7 +148,16 @@ public class TaskController {
     @Operation(summary = "Alternar status de conclusão", description = "Marca ou desmarca uma tarefa como realizada")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Status alterado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada")
+            @ApiResponse(responseCode = "404", description = "Tarefa não encontrada"),
+            @ApiResponse(responseCode = "403", description = "Acesso negado. Token inválido ou sem permissão.",
+                    content = @Content(mediaType = "application/json",
+                            examples = @ExampleObject(value = """
+                {
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Acesso negado. Usuário não autorizado."
+                }
+                """)))
     })
     public ResponseEntity<TaskResponse> toggleRealizado(@PathVariable Long id) {
             Task task = taskService.check(id);
