@@ -53,11 +53,15 @@ public class Task {
     @Column(nullable = false)
     private Boolean ativo = true;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Task(String nome, String descricao, Integer prioridade) {
+    public Task(String nome, String descricao, Integer prioridade,User user) {
         this.nome = nome;
         this.descricao = descricao;
         this.prioridade = prioridade;
+        this.user = user;
     }
 
     public void marcarComoRealizada() {
