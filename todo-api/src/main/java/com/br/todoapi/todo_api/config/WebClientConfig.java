@@ -15,4 +15,12 @@ public class WebClientConfig {
                 .baseUrl("https://api-receitas-pi.vercel.app")
                 .build();
     }
+
+    @Bean
+    @Qualifier("movieClient")
+    public WebClient movieClient() {
+        return WebClient.builder()
+                .baseUrl("https://imdb.iamidiotareyoutoo.com")
+                .build();
+    }
 }
